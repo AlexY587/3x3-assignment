@@ -9,6 +9,8 @@ float rect7X, rect7Y, rect7Width, rect7Height;
 float rect8X, rect8Y, rect8Width, rect8Height;
 float rect9X, rect9Y, rect9Width, rect9Height;
 float xcenter, ycenter;
+float xstart, ystart,startheight, startwidth ;
+color red = #FF0808, blue = #0A08FF, resetButtonColour = #FFFFFF, buttonFill, grey=#959191;
 //
 void setup() {
   size(1200, 800);
