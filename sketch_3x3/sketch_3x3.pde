@@ -13,16 +13,22 @@ float leavebannanaX, leavebannanaY, leavebannanaWidth, leavebannanaHeight;
 float xcenter, ycenter;
 float xstart, ystart, startheight, startwidth;
 float xquit, yquit, quitheight, quitwidth;
-color red = #FF0808, blue = #0A08FF, reset = #FFFFFF, startTint, grey=#959191, black=#000000, quitTint;
+color red = #FF0808, blue = #0A08FF, reset = #FFFFFF, startTint, grey=#959191, black=#000000, quitTint, eatTint, leaveTint;
 String startTitle = "Start", quitTitle = "Exit", eatBannanaText = "Eat the bannana?", leaveBannanaText="Leave the bannana?";
 PFont titlefont;
 int startsize, quitSize, bannanaTextSize;
-Boolean started = false, leftbannana = false, atebannana = false;
+Boolean started = false, leftbannana = false, atebannana = false, eaten = false, left = false, choice1 = false, choice2 = false;
 float imageLargerDimension, imageSmallerDimension;
 float imageX, imageY, imagewidth, imageheight, picWidthAdjusted, picHeightAdjusted;
 Boolean widthLarger = false, heightLarger = false;
-PImage pic, pic2;
-float imageWidthRatio, imageHeightRatio;
+float imageLargerDimension2, imageSmallerDimension2;
+float imageX2, imageY2, imagewidth2, imageheight2, picWidthAdjusted2, picHeightAdjusted2;
+Boolean widthLarger2 = false, heightLarger2 = false;
+float imageLargerDimension3, imageSmallerDimension3;
+float imageX3, imageY3, imagewidth3, imageheight3, picWidthAdjusted3, picHeightAdjusted3;
+Boolean widthLarger3 = false, heightLarger3 = false;
+PImage pic, pic2, pic3;
+float imageWidthRatio, imageHeightRatio, imageWidthRatio2, imageHeightRatio2, imageWidthRatio3, imageHeightRatio3;
 //
 void setup() {
   size(1200, 800);
@@ -131,6 +137,57 @@ void setup() {
   //
   picWidthAdjusted = imagewidth * imageWidthRatio;
   picHeightAdjusted = imageheight * imageHeightRatio;
+  //end image1
+    pic2 = loadImage("bannana.png");//dimensions : width 1600, height 1067
+  int picWidth2 = 1600, picHeight2 = 1067;
+  if (picWidth2 >= picHeight2) {
+  imageLargerDimension2 = picWidth2;
+  imageSmallerDimension2 = picHeight2;
+  widthLarger2 = true;
+} else {
+  //false if portrait
+  imageLargerDimension2 = picHeight2;
+  imageSmallerDimension2 = picWidth2;
+  heightLarger2 = true;
+ }//end image dimension comparison
+  if (widthLarger2 == true) imageWidthRatio2 = imageLargerDimension2 / imageLargerDimension2;
+  if (widthLarger2 == true) imageHeightRatio2 = imageSmallerDimension2 / imageLargerDimension2;
+  if (heightLarger2 == true) imageWidthRatio2 = imageSmallerDimension2 / imageLargerDimension2;
+  if (heightLarger2 == true) imageHeightRatio2 = imageLargerDimension2 / imageLargerDimension2;
+  //
+  imageX2 = rect2X * 3;
+  imageY2 = rect2Y*1.05;
+  imagewidth2 = rect2Height/1.1;//Canvas (0,0) means point doesnt match to rectangle missing outline on two sides
+  imageheight2 = rect2Width;
+  //
+  picWidthAdjusted2 = imagewidth2 * imageWidthRatio2;
+  picHeightAdjusted2 = imageheight2 * imageHeightRatio2;
+  //end image2
+    pic3 = loadImage("bannana.png");//dimensions : width 1600, height 1067
+  int picWidth3 = 1600, picHeight3 = 1067;
+  if (picWidth3 >= picHeight3) {
+  imageLargerDimension3 = picWidth3;
+  imageSmallerDimension3 = picHeight3;
+  widthLarger3 = true;
+} else {
+  //false if portrait
+  imageLargerDimension3 = picHeight3;
+  imageSmallerDimension3 = picWidth3;
+  heightLarger3 = true;
+ }//end image dimension comparison
+  if (widthLarger3 == true) imageWidthRatio3 = imageLargerDimension3 / imageLargerDimension3;
+  if (widthLarger3 == true) imageHeightRatio3 = imageSmallerDimension3 / imageLargerDimension3;
+  if (heightLarger3 == true) imageWidthRatio3 = imageSmallerDimension3 / imageLargerDimension3;
+  if (heightLarger3 == true) imageHeightRatio3 = imageLargerDimension3 / imageLargerDimension3;
+  //
+  imageX3 = rect2X * 3;
+  imageY3 = rect2Y*1.05;
+  imagewidth3 = rect2Height/1.1;//Canvas (0,0) means point doesnt match to rectangle missing outline on two sides
+  imageheight3 = rect2Width;
+  //
+  picWidthAdjusted3 = imagewidth3 * imageWidthRatio3;
+  picHeightAdjusted3 = imageheight3 * imageHeightRatio3;
+  //end image3
 }//end setup
 //
 void draw() {
@@ -143,19 +200,34 @@ void draw() {
   rect(rect9X, rect9Y, rect9Width, rect9Height);
   if (mouseX>xstart && mouseX<xstart+startheight && mouseY>ystart && mouseY<ystart+startwidth) {
     startTint = grey;
+    if (started == true) {
+    startTitle = "Already Started";
+    startsize = 25;
+  }
   } else {
+    startTitle = "Start";
     startTint = reset;
+    startsize = 50;
   } //endhoverover
   if (mouseX>xquit && mouseX<xquit+quitheight && mouseY>yquit && mouseY<yquit+quitwidth) {
     quitTint = red;
   } else {
     quitTint = reset;
   } //endhoverover
+    if (mouseX>eatbannanaX && mouseX<eatbannanaX+eatbannanaWidth && mouseY>eatbannanaY && mouseY<eatbannanaY+eatbannanaHeight) {
+    eatTint = grey;
+  } else {
+    eatTint = reset;
+  } //endhoverover
+    if (mouseX>leavebannanaX && mouseX<leavebannanaX+leavebannanaWidth && mouseY>leavebannanaY && mouseY<leavebannanaY+leavebannanaHeight) {
+    leaveTint = grey;
+  } else {
+    leaveTint = reset;
+  } //endhoverover
   fill(startTint);
   rect(xstart, ystart, startheight, startwidth);
   fill(black);
-  textAlign(CENTER, CENTER );
-  startsize = 50; //Change this until it fits
+  textAlign(CENTER, CENTER ); //Change this until it fits
   textFont(titlefont, startsize);
   text(startTitle, xstart, ystart, startheight, startwidth);
   fill(reset);
@@ -171,17 +243,38 @@ void draw() {
   //
   //
   if (started == true) {
-    image(pic,imageX, imageY, picHeightAdjusted, picWidthAdjusted);
+    if (choice2 == false) {
+    if (choice1 == true) {
+      eatBannanaText = "Yummy";
+    }else{
+    }
+    fill(eatTint);
     rect(eatbannanaX, eatbannanaY, eatbannanaWidth, eatbannanaHeight);
     fill(black);
     textAlign(CENTER, CENTER );
-    quitSize = 22; //Change this until it fits
-    textFont(titlefont, quitSize);
-    text(quitTitle, xquit, yquit, quitheight, quitwidth);
+    bannanaTextSize = 22; //Change this until it fits
+    textFont(titlefont,bannanaTextSize );
+    text(eatBannanaText, eatbannanaX, eatbannanaY, eatbannanaWidth, eatbannanaHeight);
     fill(reset);
+    //
+    }
+    if (choice1 == false) {
+    if (choice2 == true) {
+      leaveBannanaText = ":(";
+    }
+    fill(leaveTint);
     rect(leavebannanaX, leavebannanaY, leavebannanaWidth, leavebannanaHeight);
+    fill(black);
+    textAlign(CENTER, CENTER );
+    textFont(titlefont,bannanaTextSize );
+    text(leaveBannanaText, leavebannanaX, leavebannanaY, leavebannanaWidth, leavebannanaHeight);
+    fill(reset);
   } else {
-    rect(rect2X, rect2Y, rect2Width, rect2Height);
+  }
+  }
+  rect(rect2X, rect2Y, rect2Width, rect2Height);
+  if (choice1 == false){
+  image(pic,imageX, imageY, picHeightAdjusted, picWidthAdjusted);
   }
 }//end draw
 //
@@ -193,6 +286,14 @@ void mousePressed() {
   //
   if (mouseX>xstart && mouseX<xstart+startheight && mouseY>ystart && mouseY<ystart+startwidth) {
     started = true;
+  };
+    if (mouseX>eatbannanaX && mouseX<eatbannanaX+eatbannanaWidth && mouseY>eatbannanaY && mouseY<eatbannanaY+eatbannanaHeight) {
+    eaten = true;
+    choice1 = true;
+  };
+    if (mouseX>leavebannanaX && mouseX<leavebannanaX+leavebannanaWidth && mouseY>leavebannanaY && mouseY<leavebannanaY+leavebannanaHeight) {
+    left = true;
+    choice2 = true;
   };
 } //end mousepressed
 //
