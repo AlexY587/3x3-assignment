@@ -8,14 +8,21 @@ float rect6X, rect6Y, rect6Width, rect6Height;
 float rect7X, rect7Y, rect7Width, rect7Height;
 float rect8X, rect8Y, rect8Width, rect8Height;
 float rect9X, rect9Y, rect9Width, rect9Height;
+float eatbannanaX, eatbannanaY, eatbannanaWidth, eatbannanaHeight;
+float leavebannanaX, leavebannanaY, leavebannanaWidth, leavebannanaHeight;
 float xcenter, ycenter;
 float xstart, ystart, startheight, startwidth;
 float xquit, yquit, quitheight, quitwidth;
 color red = #FF0808, blue = #0A08FF, reset = #FFFFFF, startTint, grey=#959191, black=#000000, quitTint;
-String startTitle = "Start", quitTitle = "Exit";
+String startTitle = "Start", quitTitle = "Exit", eatBannanaText = "Eat the bannana?", leaveBannanaText="Leave the bannana?";
 PFont titlefont;
-int startsize, quitSize;
-Boolean started;
+int startsize, quitSize, bannanaTextSize;
+Boolean started = false, leftbannana = false, atebannana = false;
+float imageLargerDimension, imageSmallerDimension;
+float imageX, imageY, imagewidth, imageheight, picWidthAdjusted, picHeightAdjusted;
+Boolean widthLarger = false, heightLarger = false;
+PImage pic, pic2;
+float imageWidthRatio, imageHeightRatio;
 //
 void setup() {
   size(1200, 800);
@@ -89,8 +96,41 @@ void setup() {
   yquit = ystart/0.795;
   quitheight = startheight/2;
   quitwidth = startwidth/2;
+  eatbannanaX = rect6X/0.22;
+  eatbannanaY = rect6Y*1.09;
+  eatbannanaWidth = startheight;
+  eatbannanaHeight = startwidth;
+  leavebannanaX = rect7X*4.5;
+  leavebannanaY = rect7Y*9;
+  leavebannanaWidth = startheight;
+  leavebannanaHeight = startwidth;
   //
   rect(rect1X, rect1Y, rect1Width, rect1Height);
+  //
+  pic = loadImage("bannana.png");//dimensions : width 1600, height 1067
+  int picWidth = 1600, picHeight = 1067;
+  if (picWidth >= picHeight) {
+  imageLargerDimension = picWidth;
+  imageSmallerDimension = picHeight;
+  widthLarger = true;
+} else {
+  //false if portrait
+  imageLargerDimension = picHeight;
+  imageSmallerDimension = picWidth;
+  heightLarger = true;
+ }//end image dimension comparison
+  if (widthLarger == true) imageWidthRatio = imageLargerDimension / imageLargerDimension;
+  if (widthLarger == true) imageHeightRatio = imageSmallerDimension / imageLargerDimension;
+  if (heightLarger == true) imageWidthRatio = imageSmallerDimension / imageLargerDimension;
+  if (heightLarger == true) imageHeightRatio = imageLargerDimension / imageLargerDimension;
+  //
+  imageX = rect2X * 3;
+  imageY = rect2Y*1.05;
+  imagewidth = rect2Height/1.1;//Canvas (0,0) means point doesnt match to rectangle missing outline on two sides
+  imageheight = rect2Width;
+  //
+  picWidthAdjusted = imagewidth * imageWidthRatio;
+  picHeightAdjusted = imageheight * imageHeightRatio;
 }//end setup
 //
 void draw() {
@@ -129,8 +169,17 @@ void draw() {
   text(quitTitle, xquit, yquit, quitheight, quitwidth);
   fill(reset);
   //
+  //
   if (started == true) {
-    
+    image(pic,imageX, imageY, picHeightAdjusted, picWidthAdjusted);
+    rect(eatbannanaX, eatbannanaY, eatbannanaWidth, eatbannanaHeight);
+    fill(black);
+    textAlign(CENTER, CENTER );
+    quitSize = 22; //Change this until it fits
+    textFont(titlefont, quitSize);
+    text(quitTitle, xquit, yquit, quitheight, quitwidth);
+    fill(reset);
+    rect(leavebannanaX, leavebannanaY, leavebannanaWidth, leavebannanaHeight);
   } else {
     rect(rect2X, rect2Y, rect2Width, rect2Height);
   }
