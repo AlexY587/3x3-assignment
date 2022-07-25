@@ -16,11 +16,11 @@ float endingX, endingY, endingWidth, endingHeight;
 float xcenter, ycenter;
 float xstart, ystart, startheight, startwidth;
 float xquit, yquit, quitheight, quitwidth;
-color red = #FF0808, blue = #0A08FF, reset = #FFFFFF, startTint, grey=#959191, black=#000000, quitTint, eatTint, leaveTint, monkeyTint;
-String startTitle = "Start", quitTitle = "Exit", eatBannanaText = "Eat the bannana?", leaveBannanaText="Leave the bannana?", monkeyText = "Oh no its a monkey", endingText = "";
+color red = #FF0808, blue = #0A08FF, reset = #FFFFFF, startTint, grey=#959191, black=#000000, quitTint, eatTint, leaveTint, monkeyTint, appleTint;
+String startTitle = "Start", quitTitle = "Exit", eatBannanaText = "Eat the bannana?", leaveBannanaText="Leave the bannana?", monkeyText = "Oh no its a monkey",appleText = "Its an apple!!", endingText = "";
 PFont titlefont;
-int startsize, quitSize, bannanaTextSize, endingTextSize;
-Boolean started = false, leftbannana = false, atebannana = false, eaten = false, left = false, choice1 = false, choice2 = false, monkeyed = false;
+int startsize, quitSize, bannanaTextSize, endingTextSize, appleTextsize;
+Boolean started = false, leftbannana = false, atebannana = false, eaten = false, left = false, choice1 = false, choice2 = false, monkeyed = false, apples = false;
 float imageLargerDimension, imageSmallerDimension;
 float imageX, imageY, imagewidth, imageheight, picWidthAdjusted, picHeightAdjusted;
 Boolean widthLarger = false, heightLarger = false;
@@ -121,6 +121,10 @@ void setup() {
   endingY = rect7Y*-50;
   endingWidth = appwidth;
   endingHeight = appheight*1.2;
+  appleButtonX = leavebannanaX*9.5;
+  appleButtonY = leavebannanaY;
+  appleButtonWidth = startheight;
+  appleButtonHeight = startwidth;
   //
   rect(rect1X, rect1Y, rect1Width, rect1Height);
   //
@@ -166,8 +170,8 @@ void setup() {
   if (heightLarger2 == true) imageWidthRatio2 = imageSmallerDimension2 / imageLargerDimension2;
   if (heightLarger2 == true) imageHeightRatio2 = imageLargerDimension2 / imageLargerDimension2;
   //
-  imageX2 = rect2X * 3;
-  imageY2 = rect2Y*1.05;
+  imageX2 = rect2X * 23;
+  imageY2 = rect2Y/35;
   imagewidth2 = rect2Height/1.1;//Canvas (0,0) means point doesnt match to rectangle missing outline on two sides
   imageheight2 = rect2Width;
   //
@@ -240,6 +244,11 @@ void draw() {
   } else {
     monkeyTint = reset;
   } //endhoverover
+  if (mouseX>appleButtonX && mouseX<appleButtonX+appleButtonWidth && mouseY>appleButtonY && mouseY<appleButtonY+appleButtonHeight) {
+    appleTint = grey;
+  } else {
+    appleTint = reset;
+  } //endhoverover
   fill(startTint);
   rect(xstart, ystart, startheight, startwidth);
   fill(black);
@@ -300,13 +309,35 @@ void draw() {
     fill(black);
     textAlign(CENTER, CENTER );
     endingTextSize = 75; //Change this until it fits
-    endingText = "THE END (MONKEY ENDING)";
+    endingText = "THE END (MONKEY!!!)";
     textFont(titlefont,endingTextSize );
     text(endingText, endingX, endingY, endingWidth, endingHeight);
     fill(reset);
     
   } 
-    //
+    if (choice2 == true) {
+    fill(appleTint);
+    rect(appleButtonX, appleButtonY, appleButtonWidth, appleButtonHeight);
+    fill(black);
+    textAlign(CENTER, CENTER );
+    appleTextsize = 22; //Change this until it fits
+    textFont(titlefont,appleTextsize );
+    text(appleText, appleButtonX, appleButtonY, appleButtonWidth, appleButtonHeight);
+    fill(reset);
+    image(pic2, imageX2, imageY2, picHeightAdjusted2, picWidthAdjusted2);
+  } //end monkey event
+  if (apples == true) {
+    rect(endingX, endingY, endingWidth, endingHeight);
+    fill(black);
+    textAlign(CENTER, CENTER );
+    endingTextSize = 75; //Change this until it fits
+    endingText = "THE END (APPLES!!)";
+    textFont(titlefont,endingTextSize );
+    text(endingText, endingX, endingY, endingWidth, endingHeight);
+    fill(reset);
+    
+  } 
+  //
   fill(quitTint);
   rect(xquit, yquit, quitheight, quitwidth);
   fill(black);
@@ -329,19 +360,28 @@ void mousePressed() {
   };
     if (mouseX>eatbannanaX && mouseX<eatbannanaX+eatbannanaWidth && mouseY>eatbannanaY && mouseY<eatbannanaY+eatbannanaHeight) {
     if (started == true){
+      if(choice2 == false){
     eaten = true;
     choice1 = true;
+      }
     }
   };
     if (mouseX>leavebannanaX && mouseX<leavebannanaX+leavebannanaWidth && mouseY>leavebannanaY && mouseY<leavebannanaY+leavebannanaHeight) {
     if (started == true){
+      if(choice1 == false){
     left = true;
     choice2 = true;
+      }
     }
   };
     if (mouseX>monkeyButtonX && mouseX<monkeyButtonX+monkeyButtonWidth && mouseY>monkeyButtonY && mouseY<monkeyButtonY+monkeyButtonWidth) {
     if (choice1 == true){
       monkeyed = true;
+    }
+  };
+    if (mouseX>appleButtonX && mouseX<appleButtonX+appleButtonWidth && mouseY>appleButtonY && mouseY<appleButtonY+appleButtonHeight) {
+    if (choice2 == true){
+      apples = true;
     }
   };
 } //end mousepressed
